@@ -1,0 +1,51 @@
+.bookmark_table{
+  margin-bottom: 20px;
+}
+
+.table_title{
+  font-weight: bold;
+}
+
+.public_descriptor{
+  color: green;
+}
+
+.private_descriptor{
+  color: red;
+}
+
+.url_display {
+  width: 250px;
+}
+
+.alias_display{
+  width: 250px;
+}
+
+.visibility_display{
+  width: 50px;
+}
+
+.new_bookmark{
+  background: #bbbbbb;
+  width: 300px;
+  float: right;
+  margin-right: 100px;
+}
+
+.actions input{
+  margin-left: 180px;
+  margin-bottom: 10px;
+  background-color: #666666;
+  color: #ffffff;
+}
+
+form input[type="text"]{
+  margin-left: 20px;
+  margin-bottom: 10px;
+  width: 250px;
+}
+
+.url_panel, .alias_panel, .visibility_panel{
+  margin-left: 10px;
+}
