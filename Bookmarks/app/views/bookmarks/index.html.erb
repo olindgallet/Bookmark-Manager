@@ -1,61 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Bookmarks</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
-<%= yield %>
+	  <%= form_for(Bookmark.new) do |f|%>
+	  <div class="url_panel">
+		<%= f.label :url, "URL: " %><br />
+		<%= f.text_field :url %>
+	  </div>
+	  
+	  <div class="alias_panel">
+		<%= f.label :name_alias, "Alias: " %><br />
+		<%= f.text_field :name_alias %>
+	  </div>
+		
+	  <div class="visibility_panel">
+		<%= f.label :visibility, "Visibility: " %>
+		<br />
+		<span>
+			<%= f.radio_button :visibility, 'public', :checked => true %>public
+			<%= f.radio_button :visibility, 'private' %>private
+		</span>
+	  </div>
+	  
+	  <div class="actions">
+		<%= f.submit "Add Bookmark" %>
+	  </div>
+	  
+	  <% end %>
 
-<h2>Page Label/Logo</h2>
+   	<span class="current_user">Current User: <%= current_user.email %></span>
+	<span class="sign_out_option">Tired of looking at bookmarks?  <%= link_to "Sign out", destroy_user_session_path %></span>
 
-<% if current_user == nil %>
-	This is some test text.
-	</br>
-	</br>
-	Would you like to sign in?  <%= link_to "Click me!", new_user_session_path %>
-	</br>
-	Would you like to register? <%= link_to "Click me!", new_user_registration_path %>
-
-<% else %>
-  <span>
-  <%= form_for(Bookmark.new) do |f|%>
-  <div class="url_panel">
-    <%= f.label :url, "URL: " %><br />
-    <%= f.text_field :url %>
-  </div>
-  
-  <div class="alias_panel">
-    <%= f.label :name_alias, "Alias: " %><br />
-    <%= f.text_field :name_alias %>
-  </div>
-    
-  <div class="visibility_panel">
-    <%= f.label :visibility, "Visibility: " %><br />
-    <span>
-		<%= f.radio_button :visibility, 'public', :checked => true %>public
-		<%= f.radio_button :visibility, 'private' %>private
-	</span>
-  </div>
-  
-  <div class="actions">
-    <%= f.submit "Add Bookmark" %>
-  </div>
-  
-  <% end %>
   
   <table class="bookmark_table">
-    <tr class="table_title"><td>Current User: <%= current_user.email %></td></tr>
-	<tr><td>Tired of looking at bookmarks?  <%= link_to "Sign out", destroy_user_session_path %></td></tr>
 	<% current_user.bookmarks.each do |b| %>
       <tr>
-	    <% if b.url.length() > 34 %>
-		  <td class="url_display"><a href="<%= b.url %>" target="_blank"><%= b.url[0..31]+"..." %></a></td>
-		<% else %>
-		  <td class="url_display"><a href="<%= b.url %>" target="_blank"><%= b.url %></a></td>
-		<% end %>
+	    <td class="url_display"><a href="<%= b.url %>" target="_blank"><%= truncate(b.url, :length => 34, :omission => "...") %></a></td>
 		<td class="alias_display"><%= b.name_alias %></td>
 	    <td class="visibility_display">
 		  <% if b.visibility == "private" %>
@@ -68,31 +44,31 @@
 		  <%= link_to 'Delete Link', b, :confirm => 'Are you sure?', :method => :delete, :user_id => current_user.id %>
 		</td>
 		<td>
-		  <%= link_to 'To do: Edit Link' %>
+		  <%= link_to 'Edit Link' %>
 		</td>
 	  </tr>
 	<% end %>  
   </table>	  
-  </span>
-    
-  Browse other users with accounts:
+  
+<div id="flashes">
+  <% if flash[:alert] %>
+    <span><%= flash[:alert] %></span>
+  <% end %>
+  <% flash[:alert] = nil %>
+</div>
+  
+  Browse other users with accounts: [To do: Search other bookmarks?  Or universal search?]
+  </br>
   <% User.where(["ID != ?", current_user.id]).each do |u| %>
+    <span class="general_user"> User: <%= u.email %> </span> | [To do: Hide with JQuery option]
     <table class="bookmark_table">
-    <tr class="table_title"><td>User: <%= u.email %></td></tr>
-	<% u.bookmarks.public.each do |bk| %>
+    <% u.bookmarks.public.each do |bk| %>
       <tr>
-	    <% if bk.url.length > 34 %>
-		  <td class="url_display"><a href="<%= bk.url %>" target="_blank"><%= bk.url[0..31]+"..." %></a></td>
-		<% else %>
-		  <td class="url_display"><a href="<%= bk.url %>" target="_blank"><%= bk.url %></a></td>
-		<% end %>
-		<td class="alias_display"><%= bk.name_alias %></td>
+	   	  <td class="url_display"><a href="<%= bk.url %>" target="_blank"><%= truncate(bk.url, :length => 34, :omission => "...") %></a></td>
+		  <td class="alias_display"><%= bk.name_alias %></td>
+		  <td><%= link_to 'To do: Pilfer Link' %></td>
 	  </tr>
 	<% end %>  
   </table>	
   <% end %> 
-    
-<% end %>
-
-</body>
-</html>
+b

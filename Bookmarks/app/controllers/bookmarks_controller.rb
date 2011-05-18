@@ -1,13 +1,6 @@
 class BookmarksController < ApplicationController
-  # GET /heyworlds
-  # GET /heyworlds.xml
-  def index  
-    respond_to do |format|
-	  format.html # signed_in.html.erb
-      #format.xml  { render :xml => @bookmarkviews }
-    end
-  end
-  
+  before_filter :authenticate_user!   
+    
   def create
     @bookmark = Bookmark.new(params[:bookmark])
 	
@@ -15,9 +8,18 @@ class BookmarksController < ApplicationController
 	  @bookmark.url = "http://" + @bookmark.url
 	end
 	
-	@bookmark.user_id = current_user.id
-	@bookmark.save
-	
+	if (Bookmark.exists?(:user_id =>current_user.id, :url => @bookmark.url))
+		flash[:alert] = @bookmark.url + " already exists as a bookmark, not added"
+	else
+		@bookmark.user_id = current_user.id
+		@bookmark.save
+	end
+		
+	redirect_to bookmarks_path
+  end
+  
+  def edit
+	in_place_edit_for :url, :name_alias, :visbility	
 	redirect_to bookmarks_path
   end
   

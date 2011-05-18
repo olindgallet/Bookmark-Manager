@@ -2,7 +2,24 @@
   margin-bottom: 20px;
 }
 
-.table_title{
+.current_user{
+  width: 500px;
+  position: fixed;
+  left: 900px;
+  top: 60px;
+}
+
+.sign_out_option{
+  left: 900px;
+  position: fixed;
+  top: 80px;
+}
+
+.duplicate_url_notice{
+  margin-left: 900px;
+}
+
+.general_user, .current_user{
   font-weight: bold;
 }
 
@@ -29,8 +46,8 @@
 .new_bookmark{
   background: #bbbbbb;
   width: 300px;
-  float: right;
-  margin-right: 100px;
+  position: fixed;
+  left: 900px;
 }
 
 .actions input{
@@ -48,4 +65,8 @@ form input[type="text"]{
 
 .url_panel, .alias_panel, .visibility_panel{
   margin-left: 10px;
+}
+
+.form_panel{
+  border: 1px solid #AAAAAA;
 }
